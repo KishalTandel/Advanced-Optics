@@ -12,7 +12,7 @@ c = 3.00e8                   # speed of light (m/s)
 
 
 # Frequency range
-w = np.linspace(0.01*w0, 3*w0, 20000)
+w = np.logspace(np.log10(0.01*w0), np.log10(1e4*w0), 20000)
 x = w / w0
 
 
@@ -37,13 +37,13 @@ v_phase = c / n
 
 
 # Finding local maxima and minima of n
-max_n, _ = find_peaks(n)
-min_n, _ = find_peaks(-n)
+max_n, _ = find_peaks(n, prominence=1e-3)
+min_n, _ = find_peaks(-n, prominence=1e-3)
 
 
 # Finding local maxima and minima of kappa
-max_k, _ = find_peaks(kappa)
-min_k, _ = find_peaks(-kappa)
+max_k, _ = find_peaks(kappa, prominence=1e-3)
+min_k, _ = find_peaks(-kappa, prominence=1e-3)
 
 
 # Printing extrema
@@ -96,7 +96,7 @@ for i in max_n:
     plt.annotate(
         rf'$\omega={x[i]:.3f}\omega_0$',
         xy=(x[i], n[i]),
-        xytext=(-45, 5),
+        xytext=(-70, -3),
         textcoords='offset points'
     )
 
@@ -105,7 +105,7 @@ for i in min_n:
     plt.annotate(
         rf'$\omega={x[i]:.3f}\omega_0$',
         xy=(x[i], n[i]),
-        xytext=(8, -20),
+        xytext=(-20, -15),
         textcoords='offset points'
     )
 
@@ -117,7 +117,7 @@ for i in max_k:
     plt.annotate(
         rf'$\omega={x[i]:.3f}\omega_0$',
         xy=(x[i], kappa[i]),
-        xytext=(-10, 5),
+        xytext=(10, -3),
         textcoords='offset points'
     )
 
@@ -140,9 +140,10 @@ plt.title(
     r'Real Refractive Index $n$ and Extinction Coefficient $\kappa$'
 )
 
-plt.xlim(0, 3)
+plt.xscale('log')
+plt.xlim(0.01, 1e4)
 
-plt.grid(True, alpha=0.3)
+plt.grid(True, which='both', alpha=0.3)
 plt.legend()
 
 plt.tight_layout()
