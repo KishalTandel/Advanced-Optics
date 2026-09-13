@@ -9,8 +9,8 @@ wp = 7.8e16                  # plasma frequency (rad/s)
 
 
 # Frequency range
-# Linear scale; extended enough to show high-frequency limit
-w = np.linspace(0.01*w0, 3*w0, 20000)
+# Logarithmic scale
+w = np.logspace(np.log10(0.01*w0), np.log10(1e4*w0), 20000)
 
 
 # Complex permittivity
@@ -85,7 +85,7 @@ for i in max_r:
     plt.annotate(
         rf'$\omega={x[i]:.3f}\omega_0$',
         xy=(x[i], eps_r[i]),
-        xytext=(-60, 10),
+        xytext=(-70, -3),
         textcoords='offset points'
     )
 
@@ -94,7 +94,7 @@ for i in min_r:
     plt.annotate(
         rf'$\omega={x[i]:.3f}\omega_0$',
         xy=(x[i], eps_r[i]),
-        xytext=(-20, -15),
+        xytext=(10, -3),
         textcoords='offset points'
     )
 
@@ -106,7 +106,7 @@ for i in max_i:
     plt.annotate(
         rf'$\omega={x[i]:.3f}\omega_0$',
         xy=(x[i], eps_i[i]),
-        xytext=(10, -5),
+        xytext=(-70, -3),
         textcoords='offset points'
     )
 
@@ -123,14 +123,15 @@ for i in min_i:
 # Labels and formatting
 
 plt.xlabel(r'Normalized frequency $\omega/\omega_0$')
-plt.ylabel(r'Relative permittivity')
+plt.ylabel(r'$\epsilon_r\text{ , } \epsilon_i$')
 plt.title(
     r'Real and Imaginary Parts of Complex Permittivity'
 )
 
-plt.xlim(0, 3)
+plt.xscale('log')
+plt.xlim(0.01, 1e4)
 
-plt.grid(True, alpha=0.3)
+plt.grid(True, which='both', alpha=0.3)
 plt.legend()
 
 plt.tight_layout()
